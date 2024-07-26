@@ -26,6 +26,8 @@ locals {
 
   # nome da imagem do container
   container_images = local.project_name
+  ecr_repository_name_app = "app"
+  create_ecr = true
 
   # configuração do ECR
   ecs_params = {

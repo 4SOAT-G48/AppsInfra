@@ -44,3 +44,14 @@ module "vpc" {
     private_subnet_cidrs = [for network in module.subnet_addrs.networks : network.cidr_block if network.name == "private-a" || network.name == "private-b"]
     
 }
+
+################################################################################
+# ECR Module
+################################################################################
+module "ecr" {
+    source = "../../modulos/ecr"
+
+    project_name = local.project_name
+    create_ecr = local.create_ecr
+    repository_sufix_name = local.ecr_repository_name_app
+}
