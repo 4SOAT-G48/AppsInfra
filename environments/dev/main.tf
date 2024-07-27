@@ -55,3 +55,16 @@ module "ecr" {
     create_ecr = local.create_ecr
     repository_sufix_name = local.ecr_repository_name_app
 }
+
+################################################################################
+# ECS Module
+################################################################################
+module "ecs" {
+  source = "../../modulos/ecs"
+  project_name = local.project_name
+  environment = local.environment
+  vpc_id = module.vpc.vpc_id
+  subnet_ids = module.vpc.public_subnet_ids
+  ecs_cluster_name = "${local.project_name}-${local.environment}-cluster"
+  ecs_params = local.ecs_params
+}

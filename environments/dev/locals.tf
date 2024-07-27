@@ -31,9 +31,13 @@ locals {
 
   # configuração do ECR
   ecs_params = {
+    container_name   = "app-hacka-api"
     container_port   = "8081"
+    container_host_port = "80"
+    #container_image_url = aws_ecr_repository.app_repository.repository_url
+    container_image_url = module.ecr.ecr_repository_url
     memory           = "512"
     cpu              = "256"
-    desired_capacity = 3
+    desired_capacity = 2
   }
 }
