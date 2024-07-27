@@ -22,8 +22,8 @@ resource "aws_ecs_task_definition" "fargate_task" {
 	  essential = true
 	  portMappings = [
 		{
-		  containerPort = var.ecs_params.container_port #80
-		  hostPort      = var.ecs_params.container_host_port #80
+		  containerPort = var.ecs_params.container_port
+		  hostPort      = var.ecs_params.container_port
 		}
 	  ]
 	}

@@ -28,8 +28,7 @@ variable "ecs_params" {
   description = "Parâmetros do ECS"
   type = object({
     container_name   = string
-    container_port   = string
-    container_host_port = string
+    container_port   = number
     container_image_url = string
     memory           = string
     cpu              = string
