@@ -28,4 +28,7 @@ variable "private_subnet_cidrs" {
   type        = list(string)
 }
 
-
+variable "db_subnet_cidrs" {
+  description = "Blocos CIDR para as subnets do banco de dados"
+  type        = list(string)
+}
