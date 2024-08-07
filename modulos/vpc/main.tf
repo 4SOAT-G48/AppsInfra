@@ -83,3 +83,35 @@ resource "aws_db_subnet_group" "default" {
   }
 }
 
+resource "aws_security_group_rule" "allow_postgres" {
+  type              = "ingress"
+  from_port         = 5432
+  to_port           = 5432
+  protocol          = "tcp"
+  security_group_id = aws_security_group.default.id
+  cidr_blocks       = [var.local_machine_ip]  # Use a variável local_machine_ip
+}
+
+resource "aws_internet_gateway" "igw" {
+  vpc_id = module.vpc.vpc_id
+  tags = {
+    Name = "${var.project_name}-igw"
+  }
+}
+
+resource "aws_route_table" "public" {
+  vpc_id = module.vpc.vpc_id
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.igw.id
+  }
+  tags = {
+    Name = "${var.project_name}-public-rt"
+  }
+}
+
+resource "aws_route_table_association" "public" {
+  count          = length(var.public_subnet_cidrs)
+  subnet_id      = element(aws_subnet.public[*].id, count.index)
+  route_table_id = aws_route_table.public.id
+}

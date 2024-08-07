@@ -9,7 +9,7 @@ resource "aws_ecs_cluster" "ecs_cluster" {
 # Fargate Task Definition
 ################################################################################
 resource "aws_ecs_task_definition" "fargate_task" {
-  family                   = "${var.project_name}-${var.environment}-task"
+  family                   = "${var.project_name}-${var.environment}-${var.ecs_params.app_name}-task"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                      = var.ecs_params.cpu #"256"
@@ -18,7 +18,7 @@ resource "aws_ecs_task_definition" "fargate_task" {
   container_definitions    = jsonencode([
 	{
 	  name      = "${var.ecs_params.container_name}"
-	  image     = "${var.ecs_params.container_image_url}:latest"
+	  image     = "${var.container_image_url}:latest"
 	  essential = true
 	  portMappings = [
 		{
@@ -59,7 +59,7 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution_role_policy" {
 # ECS Service
 ################################################################################
 resource "aws_ecs_service" "ecs_service" {
-  name            = "${var.project_name}-${var.environment}-service"
+  name            = "${var.project_name}-${var.environment}-${var.ecs_params.app_name}-service"
   cluster         = aws_ecs_cluster.ecs_cluster.id
   task_definition = aws_ecs_task_definition.fargate_task.arn
   desired_count   = var.ecs_params.desired_capacity #1

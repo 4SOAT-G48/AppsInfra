@@ -32,3 +32,8 @@ variable "db_subnet_cidrs" {
   description = "Blocos CIDR para as subnets do banco de dados"
   type        = list(string)
 }
+
+variable "local_machine_ip" {
+  description = "IP da máquina local para permitir acessos externos"
+  type        = string
+}

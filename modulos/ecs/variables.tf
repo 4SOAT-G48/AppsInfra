@@ -24,12 +24,17 @@ variable "ecs_cluster_name" {
   default     = "ecs-cluster"
 }
 
+variable "container_image_url" {
+  description = "URL da imagem do container"
+  type        = string
+}
+
 variable "ecs_params" {
   description = "Parâmetros do ECS"
   type = object({
+    app_name         = string
     container_name   = string
     container_port   = number
-    container_image_url = string
     memory           = string
     cpu              = string
     desired_capacity = number
