@@ -71,7 +71,7 @@ variable "create_database_internet_gateway_route" {
 variable "enable_dns_hostnames" {
   description = "Habilitar DNS hostnames"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "enable_dns_support" {

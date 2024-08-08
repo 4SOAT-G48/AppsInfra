@@ -78,7 +78,11 @@ Repositório para infra Kubernetes com Terraform para o Hackathon da Fiap Turma 
 # Destroi (para testes)
 
 1. Via terminal entre na pasta do ambiente que deve ser executada;
-1. Execute o comando de destruição
+1. Execute o comando de destruição para todo o ambiente
     ``` shell
-    terraform destroy -target=module.vpc -target=module.ecs_pedido -target=module.ecs_pagamento -target=module.ecs_producao -target=module.orquestracao -target=module.rds
+    terraform destroy
+    ```
+1. Execute o comando de destruição para todos os recursos menos os ECRs
+    ``` shell
+    terraform destroy -target=module.vpc -target=module.ecs_pedido -target=module.ecs_pagamento -target=module.ecs_producao -target=module.orquestracao -target=module.rds -target=module.docdb -target=module.rabbitmq
     ```

@@ -195,3 +195,15 @@ module "docdb" {
   database     = local.mongo_params.database
   instance     = local.mongo_params.instance
 }
+
+################################################################################
+# RabbitMQ Module
+################################################################################
+module "rabbitmq" {
+  source = "../../../modulos/rabbitmq"
+
+  project_name = local.project_name
+  environment  = local.environment
+  vpc          = local.rabbitmq_params.vpc
+  broker       = local.rabbitmq_params.broker
+}

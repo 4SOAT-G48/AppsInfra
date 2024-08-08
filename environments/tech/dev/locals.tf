@@ -82,13 +82,23 @@ locals {
       db_subnet_group_name = module.vpc.db_subnet_group_name
     }
     database = {
-      username = "admin"
-      password = "admin"
+      username = var.mongo_params.database.username
+      password = var.mongo_params.database.password
     }
     instance = {
       name                = "mongo"
-      class               = "db.t3.micro"
+      class               = "db.r5.large"
       publicly_accessible = true
+    }
+  }
+
+  rabbitmq_params = {
+    broker = {
+      rabbitmq_username = var.rabbitmq_params.broker.rabbitmq_username
+      rabbitmq_password = var.rabbitmq_params.broker.rabbitmq_password
+    }
+    vpc = {
+      security_group_ids = [module.vpc.security_group_id]
     }
   }
 

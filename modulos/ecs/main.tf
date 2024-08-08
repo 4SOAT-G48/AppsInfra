@@ -38,7 +38,7 @@ resource "aws_ecs_task_definition" "fargate_task" {
 # IAM Role for ECS Task Execution
 ################################################################################
 resource "aws_iam_role" "ecs_task_execution_role" {
-  name = "${var.project_name}-${var.environment}-ecs-task-execution-role"
+  name = "${var.project_name}-${var.environment}-${var.ecs_params.app_name}-ecs-task-execution-role"
 
   assume_role_policy = jsonencode({
 	Version = "2012-10-17"
