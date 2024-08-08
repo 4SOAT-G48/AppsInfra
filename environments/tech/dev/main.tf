@@ -65,19 +65,91 @@ module "ecr_pedido" {
   repository_sufix_name = local.apps_params.pedido.app_name
 }
 
+module "ecr_pagamento" {
+  source = "../../../modulos/ecr"
+
+  project_name          = local.project_name
+  create_ecr            = local.apps_params.pagamento.create_ecr
+  repository_sufix_name = local.apps_params.pagamento.app_name
+}
+
+module "ecr_producao" {
+  source = "../../../modulos/ecr"
+
+  project_name          = local.project_name
+  create_ecr            = local.apps_params.producao.create_ecr
+  repository_sufix_name = local.apps_params.producao.app_name
+}
+
+module "ecr_orquestracao" {
+  source = "../../../modulos/ecr"
+
+  project_name          = local.project_name
+  create_ecr            = local.apps_params.orquestracao.create_ecr
+  repository_sufix_name = local.apps_params.orquestracao.app_name
+}
 
 ################################################################################
 # ECS Module
 ################################################################################
 module "ecs_pedido" {
-  source              = "../../../modulos/ecs"
-  project_name        = local.project_name
-  environment         = local.environment
-  vpc_id              = module.vpc.vpc_id
-  subnet_ids          = module.vpc.public_subnet_ids
-  ecs_cluster_name    = "${local.project_name}-${local.environment}-cluster"
-  container_image_url = module.ecr_pedido.ecr_repository_url
-  ecs_params          = local.apps_params.pedido
+  source                  = "../../../modulos/ecs"
+  region                  = var.region
+  account_id              = var.aws_account_id
+  project_name            = local.project_name
+  environment             = local.environment
+  vpc_id                  = module.vpc.vpc_id
+  security_groups         = [module.vpc.security_group_id]
+  subnet_ids              = module.vpc.public_subnet_ids
+  ecs_cluster_name        = "${local.project_name}-${local.environment}-cluster"
+  container_image_url     = module.ecr_pedido.ecr_repository_url
+  ecs_params              = local.apps_params.pedido
+  ecr_repository_name_app = module.ecr_pedido.ecr_repository_name
+}
+
+module "ecs_pagamento" {
+  source                  = "../../../modulos/ecs"
+  region                  = var.region
+  account_id              = var.aws_account_id
+  project_name            = local.project_name
+  environment             = local.environment
+  vpc_id                  = module.vpc.vpc_id
+  security_groups         = [module.vpc.security_group_id]
+  subnet_ids              = module.vpc.public_subnet_ids
+  ecs_cluster_name        = "${local.project_name}-${local.environment}-cluster"
+  container_image_url     = module.ecr_pagamento.ecr_repository_url
+  ecs_params              = local.apps_params.pagamento
+  ecr_repository_name_app = module.ecr_pagamento.ecr_repository_name
+}
+
+module "ecs_producao" {
+  source                  = "../../../modulos/ecs"
+  region                  = var.region
+  account_id              = var.aws_account_id
+  project_name            = local.project_name
+  environment             = local.environment
+  vpc_id                  = module.vpc.vpc_id
+  security_groups         = [module.vpc.security_group_id]
+  subnet_ids              = module.vpc.public_subnet_ids
+  ecs_cluster_name        = "${local.project_name}-${local.environment}-cluster"
+  container_image_url     = module.ecr_producao.ecr_repository_url
+  ecs_params              = local.apps_params.producao
+  ecr_repository_name_app = module.ecr_producao.ecr_repository_name
+}
+
+module "ecs_orquestracao" {
+  source                  = "../../../modulos/ecs"
+  region                  = var.region
+  account_id              = var.aws_account_id
+  project_name            = local.project_name
+  environment             = local.environment
+  vpc_id                  = module.vpc.vpc_id
+  security_groups         = [module.vpc.security_group_id]
+  subnet_ids              = module.vpc.public_subnet_ids
+  ecs_cluster_name        = "${local.project_name}-${local.environment}-cluster"
+  container_image_url     = module.ecr_orquestracao.ecr_repository_url
+  ecs_params              = local.apps_params.orquestracao
+  ecr_repository_name_app = module.ecr_orquestracao.ecr_repository_name
 }
 
 ################################################################################
@@ -108,4 +180,18 @@ module "rds" {
   }
 
   apply_immediately = local.rds_params.configuration.apply_immediately
+}
+
+
+################################################################################
+# DocDB Module
+################################################################################
+module "docdb" {
+  source = "../../../modulos/mongo"
+
+  project_name = local.project_name
+  environment  = local.environment
+  vpc          = local.mongo_params.vpc
+  database     = local.mongo_params.database
+  instance     = local.mongo_params.instance
 }

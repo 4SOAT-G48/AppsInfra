@@ -1,3 +1,18 @@
+variable "region" {
+  description = "Região onde os recursos serão criados"
+  type        = string
+}
+
+variable "account_id" {
+  description = "ID da conta AWS"
+  type        = string
+}
+
+variable "ecr_repository_name_app" {
+  description = "Nome do repositório ECR"
+  type        = string
+}
+
 variable "project_name" {
   description = "Nome do projeto"
   type        = string
@@ -27,6 +42,11 @@ variable "ecs_cluster_name" {
 variable "container_image_url" {
   description = "URL da imagem do container"
   type        = string
+}
+
+variable "security_groups" {
+  description = "Lista de IDs dos security groups"
+  type        = list(string)
 }
 
 variable "ecs_params" {
