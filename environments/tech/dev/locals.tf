@@ -175,5 +175,19 @@ locals {
       # quando for destruir o ambiente colocar para false para manter as imagens
       create_ecr = true
     }
+    deletacliente = {
+      app_name       = "deletacliente"
+      container_name = "deletacliente-app"
+      container_port = 8090
+      #container_image_url = "fiap4soatg48/develop-pedido-app:latest"
+      #container_image_url = "" #module.ecr_pedido.ecr_repository_url
+      memory           = "512"
+      cpu              = "256"
+      desired_capacity = 2
+      # para criar o repositório no ECR colocar true
+      # se já tiver criado pode colocar para false
+      # quando for destruir o ambiente colocar para false para manter as imagens
+      create_ecr = true
+    }
   }
 }

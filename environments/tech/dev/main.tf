@@ -89,6 +89,14 @@ module "ecr_orquestracao" {
   repository_sufix_name = local.apps_params.orquestracao.app_name
 }
 
+module "ecr_deletacliente" {
+  source = "../../../modulos/ecr"
+
+  project_name          = local.project_name
+  create_ecr            = local.apps_params.deletacliente.create_ecr
+  repository_sufix_name = local.apps_params.deletacliente.app_name
+}
+
 ################################################################################
 # ECS Module
 ################################################################################
@@ -150,6 +158,21 @@ module "ecs_orquestracao" {
   container_image_url     = module.ecr_orquestracao.ecr_repository_url
   ecs_params              = local.apps_params.orquestracao
   ecr_repository_name_app = module.ecr_orquestracao.ecr_repository_name
+}
+
+module "ecs_deletacliente" {
+  source                  = "../../../modulos/ecs"
+  region                  = var.region
+  account_id              = var.aws_account_id
+  project_name            = local.project_name
+  environment             = local.environment
+  vpc_id                  = module.vpc.vpc_id
+  security_groups         = [module.vpc.security_group_id]
+  subnet_ids              = module.vpc.public_subnet_ids
+  ecs_cluster_name        = "${local.project_name}-${local.environment}-cluster"
+  container_image_url     = module.ecr_deletacliente.ecr_repository_url
+  ecs_params              = local.apps_params.deletacliente
+  ecr_repository_name_app = module.ecr_deletacliente.ecr_repository_name
 }
 
 ################################################################################

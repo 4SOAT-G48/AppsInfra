@@ -7,6 +7,7 @@ resource "aws_docdb_cluster" "mongo" {
   preferred_backup_window = "01:00-03:00"
   vpc_security_group_ids  = [var.vpc.security_group_id]
   db_subnet_group_name    = var.vpc.db_subnet_group_name
+  final_snapshot_identifier = "${var.project_name}-${var.environment}-mongo-cluster-final-snapshot"
   tags = {
     Name = "${var.project_name}-mongo-cluster"
   }
